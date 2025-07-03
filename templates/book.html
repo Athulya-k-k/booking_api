@@ -1,0 +1,10 @@
+<h2>Book: {{ cls.name }}</h2>
+{% if error %}<p>{{ error }}</p>{% endif %}
+<form method="post">{% csrf_token %}
+<button type="submit">Confirm Booking</button>
+</form>
+{% if request.user.is_staff %}
+    <a href="{% url 'admin_dashboard' %}">Back to Dashboard</a>
+{% else %}
+    <a href="{% url 'user_dashboard' %}">Back to Dashboard</a>
+{% endif %}

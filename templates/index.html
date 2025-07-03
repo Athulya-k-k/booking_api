@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fitness Studio | Find Your Fit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fdfdfd;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      height: 90vh;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: bold;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-top: 15px;
+      margin-bottom: 30px;
+    }
+
+    .btn-cta {
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+    }
+
+    /* Features */
+    .features {
+      padding: 70px 0;
+      background-color: #ffffff;
+    }
+
+    .features .card {
+      border: none;
+      border-radius: 15px;
+      transition: transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+
+    .features .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+
+    .features img {
+      height: 220px;
+      object-fit: cover;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    /* About Section */
+    .about {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: white;
+      padding: 70px 0;
+    }
+
+    .about h2 {
+      font-size: 2.5rem;
+      margin-bottom: 25px;
+    }
+
+    .about p {
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #111;
+      color: #bbb;
+      padding: 30px 0;
+    }
+
+    .footer a {
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #fff;
+    }
+
+    .footer h5 {
+      color: white;
+    }
+
+    .footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer li {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Find Your Fit</h1>
+      <p>Join our fitness studio today — Yoga, Zumba, HIIT & more</p>
+      <a href="{% url 'signup' %}" class="btn btn-light btn-cta me-3">Get Started</a>
+      <a href="{% url 'login' %}" class="btn btn-outline-light btn-cta">Login</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="container text-center">
+      <h2 class="mb-5">Our Core Programs</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=700&q=60" alt="Yoga" />
+            <div class="card-body">
+              <h5 class="card-title">Yoga & Mindfulness</h5>
+              <p class="card-text">Relax, breathe, and stretch with expert-led yoga sessions for all levels.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="https://plus.unsplash.com/premium_photo-1663054933667-fb307cea9aab?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Zumba" />
+            <div class="card-body">
+              <h5 class="card-title">Zumba Dance</h5>
+              <p class="card-text">Boost your cardio while dancing to energizing Latin and global beats.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="HIIT" />
+            <div class="card-body">
+              <h5 class="card-title">HIIT & Strength</h5>
+              <p class="card-text">High-Intensity Interval Training to torch calories and build strength fast.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us -->
+ <!-- About Us -->
+<!-- About Us -->
+<section class="about py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      
+      <!-- Text -->
+      <div class="col-lg-6 mb-4 mb-lg-0 text-white">
+        <h2 class="mb-4">About Our Studio</h2>
+        <p>
+          At <strong>Fitness Studio</strong>, we believe fitness is not just about working out — it’s about finding balance, motivation, and a supportive community. Whether you're a beginner or a fitness enthusiast, our doors are open for everyone.
+        </p>
+        <p>
+          With a variety of classes including <strong>Yoga, Zumba, HIIT</strong>, and personal training, our expert coaches are committed to helping you unlock your best self. We're not just a gym — we're a journey toward health and happiness.
+        </p>
+        <a href="{% url 'signup' %}" class="btn btn-light mt-3 px-4 py-2">Join the Movement</a>
+      </div>
+
+      <!-- Image -->
+      <div class="col-lg-6">
+        <img src="https://images.unsplash.com/photo-1723117417879-2effcca63cda?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Fitness Studio" class="img-fluid rounded shadow">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <h5>Fitness Studio</h5>
+          <p>Your trusted space for movement, wellness, and motivation.</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Signup</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Contact</h5>
+          <ul>
+            <li>Email: support@fitnessstudio.com</li>
+            <li>Phone: +1 555-123-4567</li>
+            <li>Location: Mississauga, Ontario</li>
+          </ul>
+        </div>
+      </div>
+      <hr style="border-color: #666;" />
+      <p class="text-center">&copy; 2025 Fitness Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

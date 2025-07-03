@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Dashboard | Fitness Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+    }
+
+    .navbar {
+      background: linear-gradient(to right, #6A82FB, #FC5C7D);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.4rem;
+      color: #fff !important;
+    }
+
+    .nav-link {
+      color: #fff !important;
+    }
+
+    .dashboard-header {
+      text-align: center;
+      padding: 40px 0 20px;
+    }
+
+    .dashboard-header h2 {
+      color: #333;
+      font-weight: 700;
+    }
+
+    .dashboard-header p {
+      color: #666;
+    }
+
+    .class-card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease-in-out;
+      height: 100%;
+    }
+
+    .class-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .class-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FF4B2B;
+    }
+
+    .class-detail {
+      margin: 5px 0;
+      color: #333;
+    }
+
+    .badge {
+      background-color: #6A82FB;
+      font-size: 0.75rem;
+      padding: 5px 10px;
+    }
+
+    .countdown {
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #fc5c7d;
+      margin-top: 10px;
+    }
+
+    .btn-book, .btn-danger {
+      border-radius: 25px;
+      font-weight: bold;
+    }
+
+    .btn-book {
+      background: linear-gradient(to right, #6A82FB, #FC5C7D);
+      color: white;
+      border: none;
+    }
+
+    .btn-book:hover {
+      background: linear-gradient(to right, #FC5C7D, #6A82FB);
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">Fitness Studio</a>
+    <div class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav">
+        <li class="nav-item me-3">
+          <span class="nav-link">Welcome, {{ request.user.username }}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Header -->
+<div class="dashboard-header container">
+  <h2>Your Upcoming Classes</h2>
+  <p>Stay on track and crush your goals.</p>
+</div>
+
+<!-- Class Grid -->
+<div class="container">
+  <div class="row g-4">
+    {% for cls in classes %}
+    <div class="col-md-6 col-lg-4">
+      <div class="class-card">
+        <div class="class-name">{{ cls.name }}</div>
+        <div class="class-detail"><i class="bi bi-person-fill"></i> Instructor: {{ cls.instructor }}</div>
+        <div class="class-detail"><i class="bi bi-calendar"></i> Date: {{ cls.datetime|date:"d M Y" }}</div>
+        <div class="class-detail"><i class="bi bi-clock"></i> Time: {{ cls.datetime|date:"h:i A" }}</div>
+        <div class="class-detail">
+          <span class="badge text-light">{{ cls.available_slots }} Slots Left</span>
+        </div>
+
+        <!-- Countdown -->
+        <div class="countdown" data-datetime="{{ cls.datetime|date:'Y-m-d H:i:s' }}" id="countdown-{{ cls.id }}">
+          Loading countdown...
+        </div>
+
+        <!-- Booking / Cancel -->
+        {% if cls.id in booked_ids %}
+          {% for booking in user_bookings %}
+            {% if booking.fitness_class.id == cls.id %}
+            <form method="post" action="{% url 'cancel_booking' booking.id %}" class="mt-3">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm w-100">Cancel Booking</button>
+            </form>
+            {% endif %}
+          {% endfor %}
+        {% elif cls.available_slots > 0 %}
+          <a href="{% url 'book_class_page' cls.id %}" class="btn btn-book btn-sm w-100 mt-3">Book Now</a>
+        {% else %}
+          <div class="text-muted mt-3">Class Full</div>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+      <p class="text-center text-muted">No upcoming classes available right now.</p>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+<!-- Countdown Script -->
+<script>
+  function initializeCountdown() {
+    const elements = document.querySelectorAll('[data-datetime]');
+    elements.forEach(el => {
+      const targetDate = new Date(el.dataset.datetime.replace(' ', 'T'));
+      const interval = setInterval(() => {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          el.innerHTML = "🎉 Starting Now!";
+          clearInterval(interval);
+        } else {
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / (1000 * 60)) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+          el.innerHTML = `Starts in: ${hours}h ${minutes}m ${seconds}s`;
+        }
+      }, 1000);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initializeCountdown);
+</script>
+
+</body>
+</html>

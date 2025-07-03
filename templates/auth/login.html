@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Fitness Studio</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            margin: 0;
+           
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 850px;
+            height: 500px;
+            display: flex;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .form-container, .side-panel {
+            flex: 1;
+            padding: 50px;
+        }
+
+        .form-container {
+            background: #fff;
+        }
+
+        .form-container h2 {
+          
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"] {
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            outline: none;
+            font-size: 14px;
+        }
+
+        button[type="submit"] {
+            margin-top: 20px;
+            background: linear-gradient(to right, #6A82FB, #FC5C7D);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background: linear-gradient(to right, #FC5C7D, #6A82FB);
+        }
+
+        .side-panel {
+            background: linear-gradient(to right, #6A82FB, #FC5C7D);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .side-panel h2 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .side-panel p {
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .side-panel a.button {
+            text-decoration: none;
+            background: white;
+           
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .side-panel a.button:hover {
+            background: #f3f3f3;
+        }
+
+        /* ✅ Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 100%;
+                height: auto;
+            }
+
+            .form-container, .side-panel {
+                width: 100%;
+                padding: 30px;
+                height: auto;
+            }
+
+            .side-panel {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container h2, .side-panel h2 {
+                font-size: 22px;
+            }
+
+            input, button {
+                font-size: 14px;
+            }
+
+            .side-panel p {
+                font-size: 13px;
+            }
+
+            .side-panel a.button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <h2>Sign In</h2>
+        <form method="post" autocomplete="off">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">SIGN IN</button>
+        </form>
+    </div>
+    <div class="side-panel">
+        <h2>Glad to see you!</h2>
+        <p>Join your favorite classes like Yoga, Zumba, and HIIT – anytime, anywhere!</p>
+        <a class="button" href="{% url 'signup' %}">SIGN UP</a>
+    </div>
+</div>
+
+</body>
+</html>
