@@ -138,9 +138,7 @@
             <span class="badge text-light">{{ cls.available_slots }} Slots Left</span>
           </div>
 
-          <div class="countdown" data-datetime="{{ cls.datetime|date:'Y-m-d H:i:s' }}" id="countdown-{{ cls.id }}">
-            Loading countdown...
-          </div>
+        
 
           {% if cls.id in booked_ids %}
             {% for booking in user_bookings %}
@@ -172,31 +170,7 @@
   </div>
 </div>
 
-<!-- Countdown Script -->
-<script>
-  function initializeCountdown() {
-    const elements = document.querySelectorAll('[data-datetime]');
-    elements.forEach(el => {
-      const targetDate = new Date(el.dataset.datetime.replace(' ', 'T'));
-      const interval = setInterval(() => {
-        const now = new Date();
-        const diff = targetDate - now;
 
-        if (diff <= 0) {
-          el.innerHTML = "🎉 Starting Now!";
-          clearInterval(interval);
-        } else {
-          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-          const minutes = Math.floor((diff / (1000 * 60)) % 60);
-          const seconds = Math.floor((diff / 1000) % 60);
-          el.innerHTML = `Starts in: ${hours}h ${minutes}m ${seconds}s`;
-        }
-      }, 1000);
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", initializeCountdown);
-</script>
 
 <!-- AJAX Booking Script -->
 <script>
