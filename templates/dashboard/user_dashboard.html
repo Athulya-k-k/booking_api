@@ -97,7 +97,6 @@
     .btn-book:hover {
       background: linear-gradient(to right, #FC5C7D, #6A82FB);
     }
-
   </style>
 </head>
 <body>
@@ -129,45 +128,49 @@
 <div class="container">
   <div class="row g-4">
     {% for cls in classes %}
-    <div class="col-md-6 col-lg-4">
-      <div class="class-card">
-        <div class="class-name">{{ cls.name }}</div>
-        <div class="class-detail"><i class="bi bi-person-fill"></i> Instructor: {{ cls.instructor }}</div>
-        <div class="class-detail"><i class="bi bi-calendar"></i> Date: {{ cls.datetime|date:"d M Y" }}</div>
-        <div class="class-detail"><i class="bi bi-clock"></i> Time: {{ cls.datetime|date:"h:i A" }}</div>
-        <div class="class-detail">
-          <span class="badge text-light">{{ cls.available_slots }} Slots Left</span>
-        </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="class-card">
+          <div class="class-name">{{ cls.name }}</div>
+          <div class="class-detail"><i class="bi bi-person-fill"></i> Instructor: {{ cls.instructor }}</div>
+          <div class="class-detail"><i class="bi bi-calendar"></i> Date: {{ cls.datetime|date:"d M Y" }}</div>
+          <div class="class-detail"><i class="bi bi-clock"></i> Time: {{ cls.datetime|date:"h:i A" }}</div>
+          <div class="class-detail">
+            <span class="badge text-light">{{ cls.available_slots }} Slots Left</span>
+          </div>
 
-        <!-- Countdown -->
-        <div class="countdown" data-datetime="{{ cls.datetime|date:'Y-m-d H:i:s' }}" id="countdown-{{ cls.id }}">
-          Loading countdown...
-        </div>
+          <div class="countdown" data-datetime="{{ cls.datetime|date:'Y-m-d H:i:s' }}" id="countdown-{{ cls.id }}">
+            Loading countdown...
+          </div>
 
-        <!-- Booking / Cancel -->
-        {% if cls.id in booked_ids %}
-          {% for booking in user_bookings %}
-            {% if booking.fitness_class.id == cls.id %}
-            <form method="post" action="{% url 'cancel_booking' booking.id %}" class="mt-3">
+          {% if cls.id in booked_ids %}
+            {% for booking in user_bookings %}
+              {% if booking.fitness_class.id == cls.id %}
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <span class="badge bg-success px-3 py-2">✅ Booked</span>
+                <form method="post" action="{% url 'cancel_booking' booking.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                </form>
+              </div>
+              {% endif %}
+            {% endfor %}
+          {% elif cls.available_slots > 0 %}
+            <form class="booking-form mt-3" data-class-id="{{ cls.id }}">
               {% csrf_token %}
-              <button type="submit" class="btn btn-danger btn-sm w-100">Cancel Booking</button>
+              <button type="submit" class="btn btn-book btn-sm w-100" id="book-btn-{{ cls.id }}">
+                Book Now
+              </button>
             </form>
-            {% endif %}
-          {% endfor %}
-        {% elif cls.available_slots > 0 %}
-          <a href="{% url 'book_class_page' cls.id %}" class="btn btn-book btn-sm w-100 mt-3">Book Now</a>
-        {% else %}
-          <div class="text-muted mt-3">Class Full</div>
-        {% endif %}
+          {% else %}
+            <div class="text-muted mt-3">Class Full</div>
+          {% endif %}
+        </div>
       </div>
-    </div>
     {% empty %}
       <p class="text-center text-muted">No upcoming classes available right now.</p>
     {% endfor %}
   </div>
 </div>
-
-
 
 <!-- Countdown Script -->
 <script>
@@ -193,6 +196,46 @@
   }
 
   document.addEventListener("DOMContentLoaded", initializeCountdown);
+</script>
+
+<!-- AJAX Booking Script -->
+<script>
+  document.querySelectorAll('.booking-form').forEach(form => {
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const classId = this.dataset.classId;
+      const button = document.getElementById(`book-btn-${classId}`);
+      const originalText = button.innerHTML;
+
+      button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Booking...`;
+      button.disabled = true;
+
+      const csrfToken = this.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      try {
+        const response = await fetch(`/book/${classId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrfToken,
+          },
+        });
+
+        if (response.ok) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500); // delay to show loading
+        } else {
+          alert('Booking failed. Try again.');
+          button.innerHTML = originalText;
+          button.disabled = false;
+        }
+      } catch (error) {
+        alert('Something went wrong!');
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }
+    });
+  });
 </script>
 
 </body>
